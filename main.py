@@ -11,12 +11,20 @@ from constants import (
     ASTEROID_MAX_RADIUS,
     ASTEROID_KINDS,
     ASTEROID_SPAWN_RATE,
+    PLAYER_TURN_SPEED,
+    PLAYER_SPEED, 
 )    
 
 def main():
     pygame.init()
+
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+    Player.containers = (updatable, drawable)
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     player=Player(x = SCREEN_WIDTH / 2,y = SCREEN_HEIGHT / 2)
+    
+
     print("Starting Asteroids!")
     print (f"Screen width: {SCREEN_WIDTH}")
     print (f"Screen height: {SCREEN_HEIGHT}")
@@ -29,7 +37,11 @@ def main():
             if event.type == pygame.QUIT:
                 return
         screen.fill(black)
-        player.draw(screen)
+        for item in drawable:
+            item.draw(screen)
+        
+        for item in updatable:
+            item.update(dt)
         pygame.display.flip()
         dt=clock.tick(60)/1000
         
